@@ -23,7 +23,7 @@ class DoctrineRepository extends EntityRepository implements RepositoryInterface
 
         $em = $app['Doctrine\ORM\EntityManager'];
 
-        parent::__construct($em, new \Doctrine\ORM\Mapping\ClassMetadata('User'));
+        parent::__construct($em, new \Doctrine\ORM\Mapping\ClassMetadata($app['config']->get('confide::user_class', 'User')));
     }
 
     /**
