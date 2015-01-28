@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
  * in Confide using Doctrine.
  *
  * @license MIT
- * @package Zizaco\Confide
+ * @package kiwing-it\confide-doctrine
  */
 class DoctrineRepository extends EntityRepository implements RepositoryInterface
 {
