@@ -13,6 +13,13 @@ use Doctrine\ORM\EntityRepository;
 class DoctrineRepository extends EntityRepository implements RepositoryInterface
 {
     /**
+     * Laravel application.
+     *
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app;
+
+    /**
      * Create a new ConfideRepository
      *
      * @param \Illuminate\Foundation\Application $app Laravel application object
@@ -20,6 +27,7 @@ class DoctrineRepository extends EntityRepository implements RepositoryInterface
     public function __construct($app = null)
     {
         $app = $app ?: app();
+        $this->app = $app;
 
         $em = $app['Doctrine\ORM\EntityManager'];
 
@@ -91,7 +99,7 @@ class DoctrineRepository extends EntityRepository implements RepositoryInterface
             'email' => $emailOrUsername,
         ];
 
-        $useEmailAsUsername = $app['config']->get('confide::email_as_username', false);
+        $useEmailAsUsername = $this->app['config']->get('confide::email_as_username', false);
 
         if($useEmailAsUsername) {
             $identity += [
