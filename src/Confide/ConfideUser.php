@@ -92,7 +92,7 @@ trait ConfideUser
     public function getAuthIdentifier()
     {
         // Get the value of the model's primary key.
-        return $this->getKey();
+        return $this->getId();
     }
 
     /**
