@@ -37,18 +37,29 @@ class UserValidator implements UserValidatorInterface
     public $repo;
 
     /**
+     * Laravel application.
+     *
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app;
+
+    public function __construct($app = null)
+    {
+        $app = $app ?: app();
+        $this->app = $app;
+    }
+
+    /**
      * Validation rules for this Validator.
      *
      * @var array
      */
     public $rules = [
         'create' => [
-            'username' => 'required|alpha_dash',
             'email'    => 'required|email',
             'password' => 'required|min:4',
         ],
         'update' => [
-            'username' => 'required|alpha_dash',
             'email'    => 'required|email',
             'password' => 'required|min:4',
         ]
@@ -63,6 +74,18 @@ class UserValidator implements UserValidatorInterface
      */
     public function validate(ConfideUserInterface $user, $ruleset = 'create')
     {
+        $emailAsUsername = $this->app['config']->get('confide::email_as_username', false);
+
+        if(!$emailAsUsername) {
+            $this->$rules += [
+                'create' => [
+                    'username' => 'required|alpha_dash',
+                ],
+                'update' => [
+                    'username' => 'required|alpha_dash',
+                ]
+            ];
+        }
         // Set the $repo as a ConfideRepository object
         $this->repo = App::make('confide.repository');
 
@@ -97,7 +120,7 @@ class UserValidator implements UserValidatorInterface
             return false;
         }
 
-        $user->setPasswordConfirmation(null);
+        //$user->setPasswordConfirmation(null);
 
         return true;
     }
@@ -115,8 +138,15 @@ class UserValidator implements UserValidatorInterface
     {
         $identity = [
             'email'    => $user->getEmail(),
-            'username' => $user->getUsername(),
         ];
+            
+        $emailAsUsername = $this->app['config']->get('confide::email_as_username', false);
+
+        if(!$emailAsUsername) {
+            $identity += [
+                'username' => $user->getUsername(),
+            ];
+        }
 
         foreach ($identity as $attribute => $value) {
 

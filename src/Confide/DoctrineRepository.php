@@ -101,7 +101,7 @@ class DoctrineRepository extends EntityRepository implements RepositoryInterface
 
         $useEmailAsUsername = $this->app['config']->get('confide::email_as_username', false);
 
-        if($useEmailAsUsername) {
+        if(!$useEmailAsUsername) {
             $identity += [
                 'username' => $emailOrUsername,
             ];
