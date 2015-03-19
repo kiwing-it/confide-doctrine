@@ -152,7 +152,7 @@ class UserValidator implements UserValidatorInterface
 
             $similar = $this->repo->getUserByIdentity([$attribute => $value]);
 
-            if (!$similar || $similar->getKey() == $user->getKey()) {
+            if (!$similar || $similar->getId() == $user->getId()) {
                 unset($identity[$attribute]);
             } else {
                 $this->attachErrorMsg(
