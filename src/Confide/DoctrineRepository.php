@@ -120,7 +120,7 @@ class DoctrineRepository extends EntityRepository implements RepositoryInterface
      */
     public function confirmByCode($code)
     {
-        $identity = ['confirmation_code' => $code];
+        $identity = ['confirmationCode' => $code];
 
         $user = $this->getUserByIdentity($identity);
 
