@@ -145,5 +145,6 @@ class DoctrineRepository extends EntityRepository implements RepositoryInterface
 
         $this->_em->persist($user);
         $this->_em->flush();
+        return true;
     }
 }
